@@ -1,4 +1,11 @@
 {
+  "framework": "create-react-app",
+  "build": {
+    "env": {
+      "GENERATE_SOURCEMAP": "false",
+      "DISABLE_ESLINT_PLUGIN": "true"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
