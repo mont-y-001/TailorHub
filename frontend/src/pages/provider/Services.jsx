@@ -5,14 +5,11 @@ import {
   Plus,
   Edit2,
   Trash2,
-  Upload,
   X,
-  Image as ImageIcon,
 } from "lucide-react";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
-import Badge from "../../components/ui/Badge";
 import ProviderLayout from "../../layouts/ProviderLayout";
 
 const fadeUp = {
