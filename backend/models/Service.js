@@ -17,7 +17,7 @@ const ServiceSchema = new mongoose.Schema({
   },
 
   image: {
-    type: String, // Supabase image URL
+    type: String, // Cloudinary image URL
   },
 
   price: {

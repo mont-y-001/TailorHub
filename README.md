@@ -38,7 +38,7 @@ This project is **fully deployed and production-ready**, showcasing real-world b
 
 ### 🖼 Image Upload
 - Image uploads handled using **Multer (memory storage)**
-- Images stored securely in **Supabase Storage**
+- Images stored securely in **Cloudinary**
 - Only image URLs are stored in MongoDB
 
 ### 📅 Appointments
@@ -64,7 +64,7 @@ This project is **fully deployed and production-ready**, showcasing real-world b
 
 ### Database & Storage
 - MongoDB Atlas (Database)
-- Supabase Storage (Image uploads)
+- Cloudinary (Image uploads)
 
 ---
 

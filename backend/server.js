@@ -37,5 +37,5 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
-  console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+  console.log("CLOUDINARY_CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
 });

@@ -1,7 +1,7 @@
 import express from "express";
 import Service from "../models/Service.js";
 import { protect } from "../middleware/auth.js";
-import supabase from "../config/supabase.js";
+import cloudinary from "../config/cloudinary.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
@@ -23,30 +23,28 @@ router.post(
         return res.status(400).json({ message: "Image is required" });
       }
 
-      // 🔥 Upload to Supabase
+      // 🔥 Upload to Cloudinary
       const file = req.file;
-      const fileName = `services/${Date.now()}-${file.originalname}`;
 
-      const { error } = await supabase.storage
-        .from("services")
-        .upload(fileName, file.buffer, {
-          contentType: file.mimetype,
-        });
-
-      if (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Image upload failed" });
-      }
-
-      const { data } = supabase.storage
-        .from("services")
-        .getPublicUrl(fileName);
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "services",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(file.buffer);
+      });
 
       const service = await Service.create({
         title,
         description,
         price,
-        image: data.publicUrl, // ✅ FULL URL
+        image: result.secure_url, // ✅ CLOUDINARY URL
         provider: req.user._id,
       });
 
@@ -95,23 +93,22 @@ router.put(
 
       if (req.file) {
         const file = req.file;
-        const fileName = `services/${Date.now()}-${file.originalname}`;
 
-        const { error } = await supabase.storage
-          .from("services")
-          .upload(fileName, file.buffer, {
-            contentType: file.mimetype,
-          });
+        const result = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: "services",
+              resource_type: "image",
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          uploadStream.end(file.buffer);
+        });
 
-        if (error) {
-          return res.status(500).json({ message: "Image upload failed" });
-        }
-
-        const { data } = supabase.storage
-          .from("services")
-          .getPublicUrl(fileName);
-
-        service.image = data.publicUrl;
+        service.image = result.secure_url;
       }
 
       await service.save();
