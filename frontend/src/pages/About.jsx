@@ -3,6 +3,34 @@ import { Scissors, Target, Eye, Heart, Shield, Zap } from "lucide-react";
 import Badge from "../components/ui/Badge";
 import Card from "../components/ui/Card";
 
+const team = [
+  {
+    name: "Mohit Yadav",
+    role: "Founder & CEO",
+    img: "/team/Mohit-Yadav/mohit-yadav.jpeg",
+  },
+  {
+    name: "Nitin Saini",
+    role: "Co-Founder",
+    img: "/team/Nitin-Saini/portfolio-1.JPG",
+  },
+  {
+    name: "Mansha Sharma",
+    role: "Lead Designer",
+    img: "/team/Mansha-Sharma/ManshaSharma.jpeg",
+  },
+  {
+    name: "Prashant",
+    role: "Tech Lead",
+    img: "/team/Prashant/prashant.jpg",
+  },
+  {
+    name: "Radwa",
+    role: "Operations Manager",
+    img: "/team/Radwa/radwaphoto.jpeg",
+  },
+];
+
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -157,6 +185,55 @@ export default function About() {
                   </div>
                   <h3 className="text-lg font-bold text-surface-900 mb-2">{v.title}</h3>
                   <p className="text-sm text-surface-500">{v.desc}</p>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* TEAM */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <motion.div className="text-center mb-12" {...fadeUp}>
+            <Badge variant="info" className="mb-4">Our Team</Badge>
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900">
+              Meet the People Behind TailorHUB
+            </h2>
+            <p className="mt-3 text-surface-500 max-w-2xl mx-auto">
+              A passionate team dedicated to revolutionizing the tailoring industry
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
+          >
+            {team.map((member) => (
+              <motion.div
+                key={member.name}
+                variants={{
+                  initial: { opacity: 0, y: 16 },
+                  animate: { opacity: 1, y: 0 },
+                }}
+              >
+                <Card className="text-center h-full">
+                  <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-primary-50">
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-lg font-bold text-surface-900">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm text-primary-600 font-medium mt-1">
+                    {member.role}
+                  </p>
                 </Card>
               </motion.div>
             ))}

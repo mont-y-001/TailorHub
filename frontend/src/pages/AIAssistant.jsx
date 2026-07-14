@@ -30,21 +30,33 @@ export default function AIAssistant() {
     setInput("");
     setLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        "Great question! TailorHUB offers a wide range of services including shirt stitching, pant alterations, bridal wear, kids wear, and custom tailoring.",
-        "Booking is easy! Just browse our services, select one, choose a date and time, and confirm your appointment.",
-        "Our prices vary by service. Shirt stitching starts at ₹300, alterations from ₹150, and bridal wear from ₹5000.",
-        "To become a tailor, simply register as a provider, add your services, and start receiving bookings!",
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/ai/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await res.json();
+      if (data.reply) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.reply },
+        ]);
+      } else {
+        throw new Error(data.error || "No response from AI");
+      }
+    } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: randomResponse },
+        {
+          role: "assistant",
+          content: "Sorry, I'm having trouble connecting right now. Please try again later.",
+        },
       ]);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (

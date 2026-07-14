@@ -8,16 +8,15 @@ import {
   Baby,
   Sparkles,
   Star,
-  MapPin,
   Clock,
   Shield,
-  ChevronRight,
   ArrowRight,
   CheckCircle,
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Badge from "../components/ui/Badge";
+import homeImg from "../assets/homeimg.jpeg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -139,14 +138,18 @@ export default function Home() {
 
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link to="/appointment">
-                  <Button size="lg" className="w-full sm:w-auto bg-white text-primary-600 hover:bg-accent-50 hover:text-primary-700 shadow-lg">
+                  <Button
+                    variant="none"
+                    size="lg"
+                    className="w-full sm:w-auto bg-white text-primary-600 hover:bg-accent-50 hover:text-primary-700 shadow-lg border-0"
+                  >
                     Book Appointment
                     <ArrowRight className="w-5 h-5" />
                   </Button>
                 </Link>
                 <Link to="/register">
                   <Button
-                    variant="secondary"
+                    variant="none"
                     size="lg"
                     className="w-full sm:w-auto bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/30"
                   >
@@ -180,14 +183,12 @@ export default function Home() {
               className="hidden lg:flex justify-center"
             >
               <div className="relative">
-                <div className="w-80 h-96 bg-white/10 rounded-3xl backdrop-blur-sm border border-white/20 p-4">
-                  <div className="w-full h-full bg-gradient-to-br from-accent-400/20 to-primary-400/20 rounded-2xl flex items-center justify-center">
-                    <div className="text-center text-white/60">
-                      <Scissors className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                      <p className="text-lg font-semibold">Premium Tailoring</p>
-                      <p className="text-sm">Since 2024</p>
-                    </div>
-                  </div>
+                <div className="w-80 h-96 rounded-3xl overflow-hidden shadow-2xl">
+                  <img
+                    src={homeImg}
+                    alt="Premium Tailoring"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 {/* Floating badge */}
                 <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-lift p-4 flex items-center gap-3">
@@ -414,8 +415,9 @@ export default function Home() {
             </p>
             <Link to="/appointment">
               <Button
+                variant="none"
                 size="lg"
-                className="mt-8 bg-white text-primary-600 hover:bg-accent-50 shadow-lg"
+                className="mt-8 bg-white text-primary-600 hover:bg-accent-50 hover:text-primary-700 shadow-lg border-0"
               >
                 Get Started
                 <ArrowRight className="w-5 h-5" />

@@ -12,6 +12,7 @@ const variants = {
     "text-primary-500 hover:bg-primary-50 active:bg-primary-100",
   danger:
     "bg-red-500 text-white hover:bg-red-600 active:bg-red-700 shadow-soft",
+  none: "",
 };
 
 const sizes = {
@@ -33,6 +34,7 @@ const Button = forwardRef(
     },
     ref
   ) => {
+    const variantClasses = variant === "none" ? "" : variants[variant] || variants.primary;
     return (
       <button
         ref={ref}
@@ -42,7 +44,7 @@ const Button = forwardRef(
           transition-all duration-200 ease-out
           focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:ring-offset-2
           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-soft
-          ${variants[variant]} ${sizes[size]} ${className}
+          ${variantClasses} ${sizes[size]} ${className}
         `}
         {...props}
       >

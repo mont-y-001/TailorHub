@@ -28,8 +28,8 @@ export default function ProviderServices() {
     title: "",
     description: "",
     price: "",
-    image: "",
   });
+  const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
@@ -61,13 +61,21 @@ export default function ProviderServices() {
         ? `${process.env.REACT_APP_API_URL}/api/services/${editingService._id}`
         : `${process.env.REACT_APP_API_URL}/api/services`;
 
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("price", form.price);
+
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
       const res = await fetch(url, {
         method: editingService ? "PUT" : "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: formData,
       });
 
       if (res.ok) {
@@ -104,22 +112,35 @@ export default function ProviderServices() {
         title: service.title || "",
         description: service.description || "",
         price: service.price || "",
-        image: service.image || "",
       });
       setImagePreview(service.image || "");
     } else {
       setEditingService(null);
-      setForm({ title: "", description: "", price: "", image: "" });
+      setForm({ title: "", description: "", price: "" });
       setImagePreview("");
     }
+    setSelectedImage(null);
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false);
     setEditingService(null);
-    setForm({ title: "", description: "", price: "", image: "" });
+    setForm({ title: "", description: "", price: "" });
+    setSelectedImage(null);
     setImagePreview("");
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -281,23 +302,48 @@ export default function ProviderServices() {
 
                 <div>
                   <label className="block text-sm font-semibold text-surface-800 mb-1.5">
-                    Image URL (optional)
+                    Service Image
                   </label>
-                  <Input
-                    placeholder="https://example.com/image.jpg"
-                    value={form.image}
-                    onChange={(e) => {
-                      setForm({ ...form, image: e.target.value });
-                      setImagePreview(e.target.value);
-                    }}
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      id="image-upload"
+                    />
+                    <label
+                      htmlFor="image-upload"
+                      className="flex items-center justify-center w-full px-4 py-3 bg-surface-50 border-2 border-dashed border-surface-300 rounded-xl cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition-colors"
+                    >
+                      <div className="text-center">
+                        <Scissors className="w-8 h-8 text-surface-400 mx-auto mb-2" />
+                        <p className="text-sm font-medium text-surface-700">
+                          {selectedImage ? selectedImage.name : "Click to upload image"}
+                        </p>
+                        <p className="text-xs text-surface-500 mt-1">
+                          PNG, JPG, JPEG up to 5MB
+                        </p>
+                      </div>
+                    </label>
+                  </div>
                   {imagePreview && (
-                    <div className="mt-2 relative">
+                    <div className="mt-3 relative">
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        className="w-full h-40 object-cover rounded-xl"
+                        className="w-full h-48 object-cover rounded-xl"
                       />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedImage(null);
+                          setImagePreview("");
+                        }}
+                        className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
                     </div>
                   )}
                 </div>

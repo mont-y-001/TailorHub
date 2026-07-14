@@ -1,5 +1,6 @@
 {
   "framework": "create-react-app",
+  "outputDirectory": "build",
   "build": {
     "env": {
       "GENERATE_SOURCEMAP": "false",
